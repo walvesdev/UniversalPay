@@ -13,7 +13,7 @@ namespace UniversalPay.Domain.Entities
 
         public Guid AccountId { get; set; }
 
-        public PayAccount Account { get; set; }
+        public PaymentAccount Account { get; set; }
 
         public List<Payment> Payments { get; set; }
 

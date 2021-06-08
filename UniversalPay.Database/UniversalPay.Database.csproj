@@ -18,4 +18,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UniversalPay.Domain\UniversalPay.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

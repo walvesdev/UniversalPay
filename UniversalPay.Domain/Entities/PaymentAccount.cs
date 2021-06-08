@@ -4,7 +4,7 @@ using UniversalPay.Domain.Enumns;
 
 namespace UniversalPay.Domain.Entities
 {
-    public class PayAccount : EntityBase
+    public class PaymentAccount : EntityBase
     {
         public Guid ClientId { get; set; }
 
