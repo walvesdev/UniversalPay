@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace UniversalPay.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "admin")]
         public async Task<IActionResult> Get()
         {
             var response = await Mediator.Send(new AccountGetRequest());

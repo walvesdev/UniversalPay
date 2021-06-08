@@ -2,12 +2,12 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
+using UniversalPay.Api.Auth;
 using UniversalPay.Database;
 using UniversalPay.Database.Repositories.Contracts;
 using UniversalPay.Domain.Dtos;
@@ -31,7 +31,14 @@ namespace UniversalPay.Api
             services.AddScoped<IPaymentRepositoy, PaymentRepositoy>();
             services.AddScoped<IClientRepositoy, ClientRepositoy>();
 
+            services.AddScoped<LoginServiceApi>();
+            services.AddScoped<SigningConfigurations>();
+            services.AddScoped<TokenConfigurations>();
+
+            services.AddScoped<User>();
+
             services.AddControllers();
+            services.AddJwtConfigWebApi(Configuration);
 
             var assembly = AppDomain.CurrentDomain.Load("UniversalPay.Application");
             services.AddMediatR(assembly);
