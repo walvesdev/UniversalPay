@@ -8,6 +8,19 @@ namespace UniversalPay.Database.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Clients",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Clients", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PaymentAccounts",
                 columns: table => new
                 {
@@ -19,23 +32,10 @@ namespace UniversalPay.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PaymentAccounts", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Clients",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AccountId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clients", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Clients_PaymentAccounts_AccountId",
-                        column: x => x.AccountId,
-                        principalTable: "PaymentAccounts",
+                        name: "FK_PaymentAccounts_Clients_ClientId",
+                        column: x => x.ClientId,
+                        principalTable: "Clients",
                         principalColumn: "Id");
                 });
 
@@ -62,9 +62,9 @@ namespace UniversalPay.Database.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Clients_AccountId",
-                table: "Clients",
-                column: "AccountId",
+                name: "IX_PaymentAccounts_ClientId",
+                table: "PaymentAccounts",
+                column: "ClientId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -82,13 +82,13 @@ namespace UniversalPay.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "PaymentAccounts");
+
+            migrationBuilder.DropTable(
                 name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Clients");
-
-            migrationBuilder.DropTable(
-                name: "PaymentAccounts");
         }
     }
 }

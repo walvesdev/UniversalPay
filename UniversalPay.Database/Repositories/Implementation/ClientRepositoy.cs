@@ -3,7 +3,7 @@ using UniversalPay.Domain.Entities;
 
 namespace UniversalPay.Database.Repositories.Contracts
 {
-    public class ClientRepositoy : Repository<Client, Guid>
+    public class ClientRepositoy : Repository<Client, Guid>, IClientRepositoy
     {
         public ClientRepositoy(UniversalPayContext ctx) : base(ctx)
         {

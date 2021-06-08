@@ -11,7 +11,7 @@ namespace UniversalPay.Domain.Entities
     {
         public string Name { get; set; }
 
-        public Guid AccountId { get; set; }
+        public Guid? AccountId { get; set; }
 
         public PaymentAccount Account { get; set; }
 

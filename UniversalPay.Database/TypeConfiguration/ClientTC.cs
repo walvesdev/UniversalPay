@@ -1,10 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UniversalPay.Domain.Entities;
 
 namespace UniversalPay.Database.TypeConfiguration
@@ -15,10 +10,10 @@ namespace UniversalPay.Database.TypeConfiguration
         {
             builder.ToTable("Clients");
             builder.HasKey(u => u.Id);
+            builder.Property(u => u.AccountId).IsRequired(false);
 
             builder.HasOne(p => p.Account)
-                .WithOne(c => c.Client)
-                .HasForeignKey<Client>(c => c.AccountId)
+                .WithOne(c => c.Client)                
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(p => p.Payments)

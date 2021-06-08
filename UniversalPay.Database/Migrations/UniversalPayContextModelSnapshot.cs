@@ -25,16 +25,13 @@ namespace UniversalPay.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AccountId")
+                    b.Property<Guid?>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AccountId")
-                        .IsUnique();
 
                     b.ToTable("Clients");
                 });
@@ -88,21 +85,13 @@ namespace UniversalPay.Database.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClientId")
+                        .IsUnique();
+
                     b.HasIndex("Code")
                         .IsUnique();
 
                     b.ToTable("PaymentAccounts");
-                });
-
-            modelBuilder.Entity("UniversalPay.Domain.Entities.Client", b =>
-                {
-                    b.HasOne("UniversalPay.Domain.Entities.PaymentAccount", "Account")
-                        .WithOne("Client")
-                        .HasForeignKey("UniversalPay.Domain.Entities.Client", "AccountId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Account");
                 });
 
             modelBuilder.Entity("UniversalPay.Domain.Entities.Payment", b =>
@@ -116,14 +105,22 @@ namespace UniversalPay.Database.Migrations
                     b.Navigation("Client");
                 });
 
-            modelBuilder.Entity("UniversalPay.Domain.Entities.Client", b =>
-                {
-                    b.Navigation("Payments");
-                });
-
             modelBuilder.Entity("UniversalPay.Domain.Entities.PaymentAccount", b =>
                 {
+                    b.HasOne("UniversalPay.Domain.Entities.Client", "Client")
+                        .WithOne("Account")
+                        .HasForeignKey("UniversalPay.Domain.Entities.PaymentAccount", "ClientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Client");
+                });
+
+            modelBuilder.Entity("UniversalPay.Domain.Entities.Client", b =>
+                {
+                    b.Navigation("Account");
+
+                    b.Navigation("Payments");
                 });
 #pragma warning restore 612, 618
         }
