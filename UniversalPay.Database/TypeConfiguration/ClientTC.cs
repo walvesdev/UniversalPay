@@ -18,6 +18,7 @@ namespace UniversalPay.Database.TypeConfiguration
 
             builder.HasOne(p => p.Account)
                 .WithOne(c => c.Client)
+                .HasForeignKey<Client>(c => c.AccountId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(p => p.Payments)

@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using UniversalPay.Domain.Entities;
+using System.Configuration;
+using System;
+using Microsoft.Extensions.Configuration;
 
 namespace UniversalPay.Database
 {
@@ -18,10 +21,16 @@ namespace UniversalPay.Database
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {           
-            //var connectionString = Configuration.GetConnectionString("MySqlConnection"); // Configuration.GetConnectionString("PostgresSQLConnection");
+        {
+            string projectPath = AppDomain.CurrentDomain.BaseDirectory.Split(new String[] { @"bin\" }, StringSplitOptions.None)[0];
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(projectPath)
+                .AddJsonFile("appsettings.json")
+                .Build();
 
-            //optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            string connectionString = configuration.GetConnectionString("Default");
+
+            optionsBuilder.UseSqlServer(connectionString);
 
         }
 
