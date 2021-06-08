@@ -16,9 +16,11 @@ namespace UniversalPay.Database
         public UniversalPayContext UniversalPayContext { get; }
         public DbSet<TEntity> Model { get; }
         public void Insert(TEntity entity);
+        public Task<TEntity> InsertAsync(TEntity entity);
         public void Update(TEntity entity);
         public void Delete(TEntity entity);
-        public TEntity FindById(TKey id);
+        public TEntity GetById(TKey id);
+        public Task<TEntity> GetByIdAsync(TKey id);
         public ValueTask<TEntity> FindByIdAsync(TEntity entity);
         public ValueTask<IList<TEntity>> GetAllAsync();
         public IQueryable<TEntity> GetAll();

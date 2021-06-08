@@ -36,16 +36,26 @@ namespace UniversalPay.Database
         public void Insert(TEntity entity)
         {
             _ctx.Set<TEntity>().Add(entity);
+            SaveChanges();
+        }
+
+        public async Task<TEntity> InsertAsync(TEntity entity)
+        {
+            var result = await _ctx.Set<TEntity>().AddAsync(entity);
+            await SaveChangesAsync();
+            return result.Entity;
         }
 
         public void Update(TEntity entity)
         {
             _ctx.Update(entity);
+            SaveChanges();
         }
 
         public void Delete(TEntity entity)
         {
             _ctx.Remove(entity);
+            SaveChanges();
         }
 
         public IQueryable<TEntity> GetAll()
@@ -65,9 +75,14 @@ namespace UniversalPay.Database
                 .AsQueryable();
         }
 
-        public TEntity FindById(TKey id)
+        public TEntity GetById(TKey id)
         {
             return _ctx.Set<TEntity>().Find(id);
+        }
+
+        public async Task<TEntity> GetByIdAsync(TKey id)
+        {
+            return await _ctx.Set<TEntity>().FindAsync(id);
         }
 
         public async ValueTask<TEntity> FindByIdAsync(TEntity entity)

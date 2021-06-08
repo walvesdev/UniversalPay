@@ -2,10 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using UniversalPay.Application.AccountUseCases;
+using UniversalPay.Application.AccountUseCases.Requests;
+using UniversalPay.Domain.Entities;
 
 namespace UniversalPay.Api.Controllers
 {
@@ -35,14 +34,28 @@ namespace UniversalPay.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public string Get(int id)
+        [Authorize(Policy = "admin")]
+        public async Task<IActionResult> Get(Guid id)
         {
-            return "value";
+            var response = await Mediator.Send(new AccountGetByIdRequest { Id = id });
+            if (response == null)
+            {
+                return BadRequest("Account not found!");
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] PaymentAccount value)
         {
+            var response = await Mediator.Send(new AccountCreateRequest {  PaymentAccount = value });
+            if (response == null)
+            {
+                return BadRequest("Erro ao inserir dados!");
+            }
+
+            return Created(nameof(Post), response);
         }
 
         [HttpPut("{id}")]

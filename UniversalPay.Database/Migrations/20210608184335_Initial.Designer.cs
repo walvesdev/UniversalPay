@@ -10,7 +10,7 @@ using UniversalPay.Database;
 namespace UniversalPay.Database.Migrations
 {
     [DbContext(typeof(UniversalPayContext))]
-    [Migration("20210608164001_Initial")]
+    [Migration("20210608184335_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
