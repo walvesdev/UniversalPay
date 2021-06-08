@@ -47,6 +47,7 @@ namespace UniversalPay.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "admin")]
         public async Task<IActionResult> Post([FromBody] PaymentAccount value)
         {
             var response = await Mediator.Send(new AccountCreateRequest {  PaymentAccount = value });
