@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,10 @@ namespace UniversalPay.Api.Controllers
     public class PaymentController : ControllerBase
     {
         [HttpGet]
-        public IEnumerable<string> Get()
+        [Authorize(Policy = "admin")]
+        public string Get()
         {
-            return new string[] { "value1", "value2" };
+            return "OK";
         }
 
         [HttpGet("{id}")]

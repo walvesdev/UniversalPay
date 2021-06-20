@@ -1,29 +1,29 @@
 ﻿using AutoMapper;
 using MediatR;
-using System.Collections.Generic;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using UniversalPay.Application.AccountUseCases.Requests;
-using UniversalPay.Database.Repositories.Contracts;
-using UniversalPay.Domain.Dtos;
+using UniversalPay.Database;
+using UniversalPay.Domain.Entities;
 
 namespace UniversalPay.Application.AccountUseCases
 {
-    public class AccountGetByIdHandler : IRequestHandler<AccountGetByIdRequest, PaymentAccountDto>
+    public class AccountGetByIdHandler : IRequestHandler<AccountGetByIdRequest, PaymentAccount>
     {
-        public IPaymentAccountRepositoy PaymentAccountRepositoy { get; set; }
+        public IRepository<PaymentAccount, Guid> PaymentAccountRepositoy { get; set; }
 
         private IMapper Mapper { get; set; }
 
-        public AccountGetByIdHandler(IPaymentAccountRepositoy paymentAccountRepositoy, IMapper mapper)
+        public AccountGetByIdHandler(IRepository<PaymentAccount, Guid> paymentAccountRepositoy, IMapper mapper)
         {
             PaymentAccountRepositoy = paymentAccountRepositoy;
             Mapper = mapper;
         }
 
-        public async Task<PaymentAccountDto> Handle(AccountGetByIdRequest request, CancellationToken cancellationToken)
+        public async Task<PaymentAccount> Handle(AccountGetByIdRequest request, CancellationToken cancellationToken)
         {
-            return Mapper.Map<PaymentAccountDto>(await PaymentAccountRepositoy.GetByIdAsync(request.Id)); ;
+            return Mapper.Map<PaymentAccount>(await PaymentAccountRepositoy.GetByIdAsync(request.Id)); ;
 
         }
     }

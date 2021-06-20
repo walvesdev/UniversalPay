@@ -2,17 +2,18 @@ using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using UniversalPay.Api.Auth;
+using UniversalPay.Api.Controllers;
 using UniversalPay.Database;
-using UniversalPay.Database.Repositories.Contracts;
-using UniversalPay.Domain.Dtos;
 using UniversalPay.Domain.Entities;
 
+[assembly: ApiConventionType(typeof(DefaultApiConventions))]
 namespace UniversalPay.Api
 {
     public class Startup
@@ -27,9 +28,7 @@ namespace UniversalPay.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<UniversalPayContext>();
-            services.AddScoped<IPaymentAccountRepositoy, PaymentAccountRepositoy>();
-            services.AddScoped<IPaymentRepositoy, PaymentRepositoy>();
-            services.AddScoped<IClientRepositoy, ClientRepositoy>();
+            services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 
             services.AddScoped<LoginServiceApi>();
             services.AddScoped<SigningConfigurations>();
@@ -37,7 +36,9 @@ namespace UniversalPay.Api
 
             services.AddScoped<User>();
 
-            services.AddControllers();
+            services.AddControllers(options =>
+                     options.Filters.Add(new HttpResponseExceptionFilter()));
+
             services.AddJwtConfigWebApi(Configuration);
 
             var assembly = AppDomain.CurrentDomain.Load("UniversalPay.Application");
@@ -45,8 +46,8 @@ namespace UniversalPay.Api
 
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<PaymentAccountDto, PaymentAccount>();
-                cfg.CreateMap<PaymentAccount, PaymentAccountDto>();
+                cfg.CreateMap<PaymentAccount, PaymentAccount>();
+                cfg.CreateMap<PaymentAccount, PaymentAccount>();
             });
             IMapper mapper = config.CreateMapper();
 
@@ -55,6 +56,7 @@ namespace UniversalPay.Api
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UniversalPay.Api", Version = "v1" });
+                c.EnableAnnotations(enableAnnotationsForInheritance: true, enableAnnotationsForPolymorphism: true);
             });
         }
 
@@ -66,6 +68,12 @@ namespace UniversalPay.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UniversalPay.Api v1"));
             }
+            else
+            {
+                app.UseExceptionHandler("/error");
+            }
+
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 

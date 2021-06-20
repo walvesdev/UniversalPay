@@ -12,12 +12,12 @@ namespace UniversalPay.Database.TypeConfiguration
             builder.ToTable("PaymentAccounts");
             builder.HasKey(u => u.Id);
             builder.Property(p => p.Total).HasColumnType("decimal(18, 2)"); 
-            builder.HasIndex(u => u.Code).IsUnique();
+           // builder.HasIndex(u => u.Code).IsUnique();
 
-            builder.HasOne(p => p.Client)
-                .WithOne(c => c.Account)
-                .HasForeignKey<PaymentAccount>(c => c.ClientId)
-                .OnDelete(DeleteBehavior.NoAction);
+            //builder.HasOne(p => p.Client)
+            //    .WithOne(c => c.Account)
+            //    .HasForeignKey<PaymentAccount>(c => c.ClientId)
+            //    .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -5,7 +5,7 @@ using UniversalPay.Domain.Entities;
 
 namespace UniversalPay.Application.AccountUseCases.Requests
 {
-    public class AccountCreateRequest : IRequest<PaymentAccountDto>
+    public class AccountCreateRequest : IRequest<PaymentAccount>
     {
         public PaymentAccount PaymentAccount { get; set; }
     }

@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using System.Collections.Generic;
 using UniversalPay.Domain.Dtos;
+using UniversalPay.Domain.Entities;
 
 namespace UniversalPay.Application.AccountUseCases.Requests
 {
-    public class AccountGetRequest : IRequest<List<PaymentAccountDto>>
+    public class AccountGetRequest : IRequest<List<PaymentAccount>>
     {
-        public List<PaymentAccountDto> PaymentAccounts { get; set; }
+        public List<PaymentAccount> PaymentAccounts { get; set; }
     }
 }
